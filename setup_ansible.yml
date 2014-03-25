@@ -1,0 +1,41 @@
+---
+- hosts: first-boot-hosts
+  # first-boot-hosts would be a group defined in a specific inventory file that is called manually when this playbook it executed.
+  # ansible-playbook setup_ansible.yml -i inventory/first-boot --user=root --ask-pass
+  # It would be good to hook this to a dynamic inventory, where the hosts were tagged via the kickstart script once it was booted. 
+ 
+  tasks:
+  - name: Change root password
+    user: name=root 
+          password="{{ lookup('password', 'credentials/'+ inventory_hostname + '/' + 'userpassword-root length=25 chars=ascii,numbers,digits,hexdigits,punctuation encrypt=sha256_crypt') }}"
+  - debug: msg="Your root password has been saved to credentials/{{inventory_hostname}}/userpassword-root file.  Don't forget to delete after printing to store in a safe location" 
+    #Add a localaction of chmod to 600 of password file at a minimum
+    #Also look at using ansible-vault to store this password
+ 
+  - name: Add user theconfigurator
+    user: name=theconfigurator
+          uid=5000
+          password="{{ lookup('password', 'credentials/'+ inventory_hostname + '/' + 'userpassword-theconfigurator length=25 encrypt=sha256_crypt') }}"
+
+  - name: Add user remote to sudoers
+    action: lineinfile dest=/etc/sudoers regexp="^theconfigurator ALL" line='theconfigurator ALL=(ALL) NOPASSWD:ALL' state=present
+ 
+  - name: Add SSH public key to user remote
+    action: authorized_key user=configurator key="{{ lookup('file', "../files/theconfigurator-key.pub") }}"
+
+  - name: Disallow root SSH access
+    action: lineinfile dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present
+    notify: restart sshd
+ 
+  - name: Disallow SSH password authentication
+    action: lineinfile dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication no" state=present
+    notify: restart sshd
+ 
+  - name: Disallow SSH GSS API authentication
+    action: lineinfile dest=/etc/ssh/sshd_config regexp="^GSSAPIAuthentication" line="GSSAPIAuthentication no" state=present
+    notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    service: name=sshd state=restarted
+
