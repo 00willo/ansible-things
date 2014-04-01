@@ -1,0 +1,34 @@
+---
+
+- name: install lxc and prereq
+  yum: pkg={{ item }} state=latest
+  with_items:
+      - lxc
+      - lxc-libs
+      - lxc-templates
+      - bridge-utils
+      - libcgroup
+
+
+- name: link lxclib
+  file: src=/var/lib/lxc dest=/lxc
+        owner=root group=root state=link force=yes
+
+- name: make sure cgconfig is started and enabled on boot
+  service: name=cgconfig state=started enabled=yes
+
+- name: eth0 network config
+  template: src=ifcfg-eth0 dest=/etc/sysconfig/network-scripts/ifcfg-eth0 owner=root group=root mode=0644
+  notify:
+    restart network
+
+- name: br0 network config
+  template: src=ifcfg-br0 dest=/etc/sysconfig/network-scripts/ifcfg-br0 owner=root group=root mode=0644
+  notify:
+    restart network
+
+- name: set forward delay on br0 network config
+  copy: src=ifup-post dest=/etc/sysconfig/network-scripts/ifup-post owner=root group=root mode=0755
+  notify:
+    restart network
+

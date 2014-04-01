@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+DEVICE="eth0"
+BOOTPROTO="none"
+NM_CONTROLLED="no"
+ONBOOT="yes"
+TYPE="Ethernet"
+IPV6INIT="no"
+MTU="1500"
+USERCTL="no"
+BRIDGE=br0
+HWADDR={{ ansible_eth0["macaddress"] }}

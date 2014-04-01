@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+DEVICE="br0"
+TYPE="Bridge"
+ONBOOT="yes"
+DELAY="0"
+NM_CONTROLLED="no"
+IPADDR={{ br0_ip }}
+NETMASK={{ nm }}
+GATEWAY={{ gw }}
+USERCTL="no"
+IPV6INIT="no"
