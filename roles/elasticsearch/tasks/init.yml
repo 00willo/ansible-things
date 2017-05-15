@@ -1,0 +1,8 @@
+---
+
+- assert:
+    that:
+        - logstash_VIP_DNS_NAME != ''
+        - logstash_VIP != ''
+        - elasticsearch_version != ''
+  tags: ['check_vars']

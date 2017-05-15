@@ -1,0 +1,55 @@
+#{{ ansible_managed }}
+
+# Directory where the Elasticsearch binary distribution resides
+ES_HOME=/usr/share/elasticsearch
+
+# Heap Size (defaults to 256m min, 1g max)
+#Deprecated in 5
+#ES_HEAP_SIZE={{ elasticsearch_heap_size }}  #50% of mem
+
+# Heap new generation
+#ES_HEAP_NEWSIZE=
+
+# max direct memory
+#ES_DIRECT_SIZE=
+
+# Additional Java OPTS
+#ES_JAVA_OPTS=
+#ES_JAVA_OPTS=-Des.logger.level=DEBUG
+ES_JAVA_OPTS="-Djna.tmpdir=/usr/share/elasticsearch/tmp -Xms2g -Xmx2g"
+##ES_JAVA_OPTS=-Djna.tmpdir=/usr/share/elasticsearch/tmp -Djava.io.tmpdir=/usr/share/elasticsearch/tmp
+#
+
+# Maximum number of open files
+MAX_OPEN_FILES=65535
+
+# Maximum amount of locked memory
+#MAX_LOCKED_MEMORY=
+MAX_LOCKED_MEMORY=unlimited
+
+# Maximum number of VMA (Virtual Memory Areas) a process can own
+#MAX_MAP_COUNT=262144
+
+# Elasticsearch log directory
+LOG_DIR=/var/log/elasticsearch
+
+# Elasticsearch data directory
+DATA_DIR=/var/lib/elasticsearch
+
+# Elasticsearch work directory
+WORK_DIR=/tmp/elasticsearch
+
+# Elasticsearch conf directory
+CONF_DIR=/etc/elasticsearch
+
+# Elasticsearch configuration file (elasticsearch.yml)
+## DEPCRECATED
+#CONF_FILE=/etc/elasticsearch/elasticsearch.yml
+
+# User to run as, change this to a specific elasticsearch user if possible
+# Also make sure, this user can write into the log directories in case you change them
+# This setting only works for the init script, but has to be configured separately for systemd startup
+ES_USER=elasticsearch
+
+# Configure restart on package upgrade (true, every other setting will lead to not restarting)
+#RESTART_ON_UPGRADE=true

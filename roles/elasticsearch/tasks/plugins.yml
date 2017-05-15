@@ -1,0 +1,15 @@
+# Install plugins
+- name: get installed Elasticsearch plugins list
+  #command: "/usr/share/elasticsearch/bin/plugin -l"
+  command: "/usr/share/elasticsearch/bin/elasticsearch-plugin list"
+  changed_when: false
+  register: es_installed_plugins
+
+
+
+  #Site plugins are deprecated in 5 - https://www.elastic.co/blog/running-site-plugins-with-elasticsearch-5-0 
+  #- name: install Elasticsearch plugins
+  ##command: "/usr/share/elasticsearch/bin/plugin -install {{item.path}}"
+  #command: "/usr/share/elasticsearch/bin/elasticsearch-plugin install {{item.path}}"
+  #with_items: "{{es_install_plugins}}"
+  #when: "'- {{item.name}}' not in es_installed_plugins.stdout"

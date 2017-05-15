@@ -1,0 +1,22 @@
+
+# Install plugins
+es_install_plugins:
+  - name: head
+    path: mobz/elasticsearch-head
+  - name: kopf
+    path: lmenezes/elasticsearch-kopf
+  - name: HQ
+    path: royrusso/elasticsearch-HQ
+  - name: marvel
+    path: elasticsearch/marvel/latest
+  - name: paramedic
+    path: karmi/elasticsearch-paramedic
+  - name: bigdesk
+    path: lukas-vlcek/bigdesk
+  - name: whatson
+    path: xyu/elasticsearch-whatson
+  - name: segmentspy
+    path: polyfractal/elasticsearch-segmentspy
+  - name: elastic-hammer
+    path: andrewvc/elastic-hammer
+

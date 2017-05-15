@@ -1,0 +1,30 @@
+#{{ ansible_managed }}
+
+cluster.name: {{ logstash_cluster_name }}
+node.name: {{ ansible_hostname }}
+node.master: true
+node.data: true
+network.bind_host: "0.0.0.0"
+network.publish_host: _eth0:ipv4_
+#deprecated
+#index.number_of_shards: 5
+#index.number_of_replicas: 1
+#index.store: niofs
+#bootstrap.mlockall: true #renamed
+bootstrap.memory_lock: true
+#Deprecated - no longer needed
+#action.disable_delete_all_indices: true
+
+##### Uncomment below instead of using multicast and update with your actual ES Master/Data nodenames #####
+discovery.zen.ping.unicast.hosts: ["es01", "es02"]
+#Deprecated
+#discovery.zen.ping.multicast.enabled: false
+
+#### Prevent split brain ES Cluster n/2+1 ####
+discovery.zen.minimum_master_nodes: 2
+
+#### Disable marvel for monitoring cluster
+#marvel.agent.enabled: false
+#
+#Add this to production cluster to send to monitoring cluster, primary and backup
+#marvel.agent.exporter.es.hosts: ["es-mon-1:9200","es-mon-2:9200"]

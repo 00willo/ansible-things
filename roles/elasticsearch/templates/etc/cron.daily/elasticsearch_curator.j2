@@ -1,0 +1,12 @@
+#{{ ansible_managed }}
+
+#!/bin/sh
+/usr/local/bin/curator --host 127.0.0.1 delete --older-than 90
+/usr/local/bin/curator --host 127.0.0.1 close --older-than 30
+/usr/local/bin/curator --host 127.0.0.1 bloom --older-than 2
+/usr/local/bin/curator --host 127.0.0.1 optimize --older-than 2
+
+# Email report
+#recipients="{{ elasticsearch_curator_email_recipients }}"
+#subject="Daily Elasticsearch Curator Job Report"
+#cat /var/log/elasticsearch_curator.log | mail -s $subject $recipients
